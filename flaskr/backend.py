@@ -1,5 +1,6 @@
 # TODO(Project 1): Implement Backend according to the requirements.
-# Imprts flask Response library
+
+# Imports flask Response library
 from flask import Response
 # Imports the Google Cloud client library
 from google.cloud import storage
@@ -7,8 +8,10 @@ from google.cloud import storage
 storage_client = storage.Client()
 # Bucket names
 content_wiki_name = "content-wiki"
+users_pswd_name = "password-users"
 # bucket instanttiation
-content_wiki_bucket = storage_client.create_bucket(content_wiki_name)
+content_wiki_bucket = storage_client.bucket(content_wiki_name)
+users_pswd_bucket = storage_client.bucket(users_pswd_name)
 """
 TODO delete these notes when no longer needed.
 Sice the requirement is to just get an uploaded page from the bucket,
@@ -42,8 +45,9 @@ class Backend:
     def get_image(self, image_name): # TODO delete: I don't think it makes sense to not have a name parameter
         """Gets image from GCS and generates a response in order to be able to 
            display the image."""
+        # IMage name has to be complete: "james.jpg"
         image_blob = content_wiki_bucket.blob(image_name)
         image = image_blob.download_as_bytes()
         # IDK if this is correct but:
-        return Response(image, mimetype='image/jpeg')
+        return Response(image, mimetype='image/jpeg') # This assumes a jpg or jpeg image
 

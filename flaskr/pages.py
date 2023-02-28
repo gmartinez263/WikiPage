@@ -12,3 +12,22 @@ def make_endpoints(app):
         return render_template("main.html")
 
     # TODO(Project 1): Implement additional routes according to the project requirements.
+
+    # TODO DELETE
+      # Imports the Google Cloud client library
+    @app.route("/image/james")
+    def get_james():
+        from google.cloud import storage
+        # Instantiates a client
+        storage_client = storage.Client()
+        # Bucket names
+        content_wiki_name = "content-wiki"
+        # bucket instanttiation
+        content_wiki_bucket = storage_client.bucket(content_wiki_name)
+        # Hopefully getting the image
+        image_blob = content_wiki_bucket.blob("james.jpg")
+        image = image_blob.download_as_bytes()
+        # Imprts flask Response library
+        from flask import Response
+        return Response(image, mimetype='image/jpeg')
+    # TODO DELETE
