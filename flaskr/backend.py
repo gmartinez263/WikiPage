@@ -40,8 +40,8 @@ class Backend:
             page_names.append(blob.name)
         return page_names
 
-    def upload(self):
-        pass
+    def upload(self): # TODO for now I think the users will just upload text
+        self.storage.bucket.blob()
 
     def sign_up(self):
         # TODO 2 possibilities: take the values from a sign up page or make
