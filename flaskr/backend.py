@@ -63,11 +63,12 @@ class Backend:
         # Image name has to be complete: "james.jpg"
         image_blob = self.storage.bucket("content-wiki").blob(f"images/{image_name}")
         image = image_blob.download_as_bytes()
-        if image_name.endswith('.jpg') or image_name.endswith('.jpeg'):
-            mimetype = 'image/jpeg'
-        elif image_name.endswith('.png'):
-            mimetype = 'image/png'
-        else:
-            mimetype = 'image/jpg'
-        return Response(image, mimetype=mimetype)
+        # Apparently eliminating this does not cause problems
+        # if image_name.endswith('.jpg') or image_name.endswith('.jpeg'):
+        #     mimetype = 'image/jpeg'
+        # elif image_name.endswith('.png'):
+        #     mimetype = 'image/png'
+        # else:
+        #     mimetype = 'image/jpg'
+        return Response(image) # , mimetype=mimetype
 
