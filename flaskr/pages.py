@@ -15,8 +15,8 @@ def make_endpoints(app):
 
     # TODO DELETE
       # Imports the Google Cloud client library
-    @app.route("/image/james")
-    def get_james():
+    @app.route("/images/<img_name>")
+    def get_james(img_name="james.jpg"):
         from google.cloud import storage
         # Instantiates a client
         storage_client = storage.Client()
