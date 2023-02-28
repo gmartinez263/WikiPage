@@ -1,9 +1,12 @@
 # TODO(Project 1): Implement Backend according to the requirements.
 
-# Imports flask Response library
+# Imports flask Response library in order to dispay images.
 from flask import Response
 # Imports the Google Cloud client library
 from google.cloud import storage
+# Imports library for hashing the passwords
+import hashlib
+
 # Instantiates a client
 storage_client = storage.Client()
 # Bucket names
@@ -18,13 +21,17 @@ Sice the requirement is to just get an uploaded page from the bucket,
 I think that means that we can just store the contents of the page and 
 use jinja to display its contents.
 """
+# Password hashing
+# hash = hashlib.blake2b("Your password".encode()).hexdigest()
+secret = "Super Secret Key"
 class Backend:
 
-    def __init__(self):
-        pass
+    def __init__(self, storage=storage_client):
+        self.storage = storage
         
     def get_wiki_page(self, name):
-        return content_wiki_bucket.blob(name)
+        # TODO parse the file, this is probably going to be just text
+        return self.storage.bucket("content-wiki").blob(name)
 
     def get_all_page_names(self):
         page_names = []
@@ -37,17 +44,24 @@ class Backend:
         pass
 
     def sign_up(self):
-        pass
+        # TODO 2 possibilities: take the values from a sign up page or make
+        # this the fuction that handles the sign up page and then redirects
+        # to another page like the main page or something
+        username = "dummy"
+        password = "dummy"
+        hash = hashlib.blake2b(f"{username}{password}{secret}".encode()).hexdigest()
 
     def sign_in(self):
-        pass
+        # TODO this will need the flask login class and tools
+        username = "dummy"
+        password = "dummy"
+        hash = hashlib.blake2b(f"{username}{password}{secret}".encode()).hexdigest()
 
     def get_image(self, image_name): # TODO delete: I don't think it makes sense to not have a name parameter
         """Gets image from GCS and generates a response in order to be able to 
            display the image."""
-        # IMage name has to be complete: "james.jpg"
-        image_blob = content_wiki_bucket.blob(image_name)
+        # Image name has to be complete: "james.jpg"
+        image_blob = self.storage.bucket("content-wiki").blob(f"images/{image_name}")
         image = image_blob.download_as_bytes()
-        # IDK if this is correct but:
         return Response(image, mimetype='image/jpeg') # This assumes a jpg or jpeg image
 

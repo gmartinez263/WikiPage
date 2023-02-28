@@ -25,7 +25,7 @@ def make_endpoints(app):
         # bucket instanttiation
         content_wiki_bucket = storage_client.bucket(content_wiki_name)
         # Hopefully getting the image
-        image_blob = content_wiki_bucket.blob("james.jpg")
+        image_blob = content_wiki_bucket.blob("images/james.jpg")
         image = image_blob.download_as_bytes()
         # Imprts flask Response library
         from flask import Response
