@@ -1,6 +1,5 @@
-from flask import render_template
-
-
+from flask import render_template, redirect, flask 
+from flask_login import login_required, logout_user, login_user, login_manager, current_user
 def make_endpoints(app):
 
     # Flask uses the "app.route" decorator to call methods when users
@@ -38,6 +37,11 @@ def make_endpoints(app):
                 return flask.abort(400)
             return flask.redirect(next or flask.url_for('index'))
         return flask.render_template('login.html', form=form)
+    
+    @app.route("/signup", methods=['GET','POST'])
+    def signup():
+        # upon signup, redirect to login
+        pass
     
     @app.route("/logout")
     @login_required
