@@ -23,6 +23,7 @@ use jinja to display its contents.
 """
 # Password hashing
 # hash = hashlib.blake2b("Your password".encode()).hexdigest()
+# TODO maybe use flask's secret for hashing?
 secret = "Super Secret Key"
 class Backend:
 
