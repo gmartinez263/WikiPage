@@ -34,8 +34,12 @@ class Backend:
         
     def get_wiki_page(self, name):
         # TODO parse the file, this is probably going to be just text
-        return self.storage.bucket("content-wiki").blob(f"pages/{name}")
-
+        blob = self.storage.bucket("content-wiki").blob(f"pages/{name}")
+        page = ""
+        with blob.open() as page_blob:
+            page = "".join(page_blob.readlines())
+        return page
+        
     def get_all_page_names(self):
         page_names = []
         blobs = storage_client.list_blobs(content_wiki_name, delimiter="pages")
@@ -46,7 +50,7 @@ class Backend:
     def upload(self): # TODO for now I think the users will just upload text
         self.storage.bucket.blob()
 
-    def sign_up(self, usrname, pswd):
+    def sign_up(self, usrname, pswd): # TODO req said to just add usr data
         usr = self.user_m.get_user_from_usrname(self.storage, usrname)
         hashed_password = hashlib.blake2b(f"{usrname}{pswd}{secret}".encode()).hexdigest()
         if usr:
@@ -56,7 +60,7 @@ class Backend:
             b.write(hashed_password)
         return self.user_m(usrname, hashed_password)
 
-    def sign_in(self, usrname, pswd):
+    def sign_in(self, usrname, pswd): # TODO req said to just verify the password
         usr = self.user_m.get_user_from_usrname(self.storage, usrname)
         hashed_password = hashlib.blake2b(f"{usrname}{pswd}{secret}".encode()).hexdigest()
         if usr:

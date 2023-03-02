@@ -1,5 +1,6 @@
 from flask import render_template, redirect, flask 
 from flask_login import login_required, logout_user, login_user, login_manager, current_user
+from user_module import User
 def make_endpoints(app):
 
     # Flask uses the "app.route" decorator to call methods when users
