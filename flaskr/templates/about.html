@@ -1,17 +1,18 @@
 {% extends "main.html" %}
 
-{% block page_name %}
-About This Wiki
-{% endblock %}
-
 {% block content %}
 <h3>About this Wiki</h3>
 
 <!-- TODO(Project 1): Add info about the wiki. -->
+<p>This is about retro games. You can post about your favorite game and 
+    any cool thing related to retro games!
+</p>
 
 <h3>Your Authors</h3>
 
-<!-- TODO(Project 1): Add team members and pictures to about page. -->
+{% for author in authors %}
+<img src="/images/{{ author }}.jpg" width=100px height=100px>
+{% endfor %}
 
 {% endblock %}
 
