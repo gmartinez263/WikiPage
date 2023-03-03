@@ -1,3 +1,4 @@
+# GOOD
 from flask_login import UserMixin
 class User(UserMixin):
     def __init__(self, id, pswd):
@@ -12,4 +13,4 @@ class User(UserMixin):
                     password = blob.read()
                 return User(username, password)
         return 
-        
+# END GOOD
