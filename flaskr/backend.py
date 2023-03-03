@@ -1,3 +1,4 @@
+# TODO(Project 1): Implement Backend according to the requirements.
 # Imports flask Response library in order to dispay images.
 from flask import Response
 # Imports the Google Cloud client library
@@ -5,7 +6,7 @@ from google.cloud import storage
 # Imports library for hashing the passwords
 import hashlib
 # Importing User class and methods
-from user_module import User
+from user import User
 
 # Instantiates a client
 storage_client = storage.Client()
@@ -28,25 +29,53 @@ secret = "Super Secret Key"
 
 
 class Backend:
-
     def __init__(self, storage=storage_client,user_m=User):
         self.storage = storage
-        self.user_m = user_m    
+        self.user_m = user_m
         
-    def get_wiki_page(self, name):
-        pass
-
+    def get_wiki_page(self, name): # TODO
+        # TODO parse the file, this is probably going to be just text
+        blob = self.storage.bucket("content-wiki").blob(f"pages/{name}")
+        page = ""
+        with blob.open() as page_blob:
+            page = "".join(page_blob.readlines())
+        return page
+        
     def get_all_page_names(self):
-        pass
+        page_names = list()
+        blobs = storage_client.list_blobs(content_wiki_name, delimiter="pages")
+        for blob in blobs: # TODO maybe add an if statement for filtering?
+            page_names.append(blob.name)
+        return page_names
 
     def upload(self):
         pass
 
-    def sign_up(self):
-        pass
+    """
+    Notes on signup and sign in:
+    They return a user data class instance on success.
+    """
+    def hash_password(self, usrname, pswd):
+        secret_key = "Team404 super secret key!"
+        return hashlib.blake2b(f"{usrname}{pswd}{secret_key}".encode()).hexdigest()
 
-    def sign_in(self):
-        pass
+    def sign_up(self, usrname, pswd): # TODO req said to just add usr data
+        usr = self.user_m.get_user_from_usrname(self.storage, usrname)
+        hashed_password = self.hash_password(usrname, pswd)
+        if usr: 
+            return None
+        blob = self.storage.bucket("content-wiki").blob("usrname")
+        with blob.open("w") as b:
+            b.write(hashed_password)
+        return self.user_m(usrname, hashed_password)
+
+    def sign_in(self, usrname, pswd): # TODO req said to just verify the password
+        usr = self.user_m.get_user_from_usrname(self.storage, usrname)
+        hashed_password = self.hash_password(usrname, pswd)
+        if usr:
+            if usr.pswd == hashed_password:
+                return usr
+        return None
 
     def get_image(self, image_name): # TODO delete: I don't think it makes sense to not have a name parameter
         """Gets image from GCS and generates a response in order to be able to 

@@ -1,6 +1,6 @@
-from flask import render_template
-from flask_login import LoginManager
-
+from flask import render_template, redirect, flask 
+from flask_login import login_required, logout_user, login_user, login_manager, current_user
+from user import User
 
 def make_endpoints(app):
 
@@ -23,6 +23,12 @@ def make_endpoints(app):
     @app.route("/signup", methods = ["POST", "GET"])
     def signup():
         return render_template("signup.html")
+  
+    @app.route("/logout")
+    @login_required
+    def logout():
+        logout_user()
+        return redirect(somewhere)
 
     @app.route("/images/<img_name>")
     def get_author_images(img_name):
