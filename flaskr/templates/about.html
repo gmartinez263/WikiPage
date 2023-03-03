@@ -1,9 +1,5 @@
 {% extends "main.html" %}
 
-{% block page_name %}
-About This Wiki
-{% endblock %}
-
 {% block content %}
 <h3>About this Wiki</h3>
 
@@ -14,10 +10,9 @@ About This Wiki
 
 <h3>Your Authors</h3>
 
-<!-- TODO(Project 1): Add team members and pictures to about page. -->
-<img src="/image/james.jpp" width=100px height=100px>
-<img src="/image/james.jpg" width=100px height=100px>
-<img src="/image/james.jpg" width=100px height=100px>
+{% for author in authors %}
+<img src="/images/{{ author }}.jpg" width=100px height=100px>
+{% endfor %}
 
 {% endblock %}
 

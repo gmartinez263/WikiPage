@@ -1,55 +1,34 @@
 from flask import render_template
+from flask_login import LoginManager
 
 
 def make_endpoints(app):
 
-    # Flask uses the "app.route" decorator to call methods when users
-    # go to a specific route on the project's website.
     @app.route("/")
     def home():
-        # TODO(Checkpoint Requirement 2 of 3): Change this to use render_template
-        # to render main.html on the home page.
-        return render_template("main.html")
+        return render_template("home.html")
 
-    # TODO(Project 1): Implement additional routes according to the project requirements.
+    @app.route("/pages")
+    def pages():
+        return render_template("pages.html")
 
-    # TODO make it work, required for user session manager
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.get(user_id)
+    @app.route("/about")
+    def about():
+        return render_template("about.html", authors = ["James", "Ale", "Geovanny"])
 
-    @app.route('/login', methods=['GET', 'POST'])
+    @app.route("/login", methods = ["POST", "GET"])
     def login():
-        # Here we use a class of some kind to represent and validate our
-        # client-side form data. For example, WTForms is a library that will
-        # handle this for us, and we use a custom LoginForm to validate.
-        form = LoginForm()
-        if form.validate_on_submit():
-            # Login and validate the user.
-            # user should be an instance of your `User` class
-            login_user(user)
+        return render_template("login.html")
 
-            flask.flash('Logged in successfully.')
+    @app.route("/signup", methods = ["POST", "GET"])
+    def signup():
+        return render_template("signup.html")
 
-            next = flask.request.args.get('next')
-            # is_safe_url should check if the url is safe for redirects.
-            # See http://flask.pocoo.org/snippets/62/ for an example.
-            if not is_safe_url(next):
-                return flask.abort(400)
-            return flask.redirect(next or flask.url_for('index'))
-        return flask.render_template('login.html', form=form)
-    
-    @app.route("/logout")
-    @login_required
-    def logout():
-        logout_user()
-        return redirect(somewhere)
-
-    # TODO DELETE
-      # Imports the Google Cloud client library
     @app.route("/images/<img_name>")
-    def get_james(img_name):
+    def get_author_images(img_name):
         from google.cloud import storage
+        from flask import Response
+        
         # Instantiates a client
         storage_client = storage.Client()
         # Bucket names
@@ -59,8 +38,4 @@ def make_endpoints(app):
         # Hopefully getting the image
         image_blob = content_wiki_bucket.blob(f"images/{img_name}")
         image = image_blob.download_as_bytes()
-        # Imports flask Response library
-        from flask import Response
         return Response(image)
-    # TODO DELETE
-    

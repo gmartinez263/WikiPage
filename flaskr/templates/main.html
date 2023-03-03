@@ -1,24 +1,17 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <head>
-        <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
-        <title>Retro Video Games</title>
+<head> 
+    <title>Retro video games</title>
     </head>
-</head>
 
 <body>
-    <!-- TODO(Project 1): Implement routes. -->
     <div>       
-        <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
-        Popular Games of the past.
+        <a href = "{{url_for('home')}}">Home</a>    <a href = "{{url_for('pages')}}">Pages</a>   
+        <a href = "{{url_for('about')}}">About</a>   |   <a href = "{{url_for('login')}}">Login</a> 
+        <a href = "{{url_for('signup')}}">Sign Up</a>
     </div>
-    <!-- delete the comment bellow
-    To dsiplay an image all you need to do is use the image tag and put in the URI
-    that you implemented in flask, in this case there is a flask route '/image/james'
-    that serves this response.-->
-    <img src="/images/james.jpg" width=100px height=100px>
+    {% block content %}{% endblock %}
 </body>
 
 </html>

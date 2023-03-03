@@ -1,11 +1,11 @@
-# TODO(Project 1): Implement Backend according to the requirements.
-
 # Imports flask Response library in order to dispay images.
 from flask import Response
 # Imports the Google Cloud client library
 from google.cloud import storage
 # Imports library for hashing the passwords
 import hashlib
+# Importing User class and methods
+from user_module import User
 
 # Instantiates a client
 storage_client = storage.Client()
@@ -25,38 +25,28 @@ use jinja to display its contents.
 # hash = hashlib.blake2b("Your password".encode()).hexdigest()
 # TODO maybe use flask's secret for hashing?
 secret = "Super Secret Key"
+
+
 class Backend:
 
-    def __init__(self, storage=storage_client):
+    def __init__(self, storage=storage_client,user_m=User):
         self.storage = storage
+        self.user_m = user_m    
         
     def get_wiki_page(self, name):
-        # TODO parse the file, this is probably going to be just text
-        return self.storage.bucket("content-wiki").blob(name)
+        pass
 
     def get_all_page_names(self):
-        page_names = []
-        blobs = storage_client.list_blobs(content_wiki_name)
-        for blob in blobs: # TODO maybe add an if statement for filtering?
-            page_names.append(blob.name)
-        return page_names
+        pass
 
-    def upload(self): # TODO for now I think the users will just upload text
-        self.storage.bucket.blob()
+    def upload(self):
+        pass
 
     def sign_up(self):
-        # TODO 2 possibilities: take the values from a sign up page or make
-        # this the fuction that handles the sign up page and then redirects
-        # to another page like the main page or something
-        username = "dummy"
-        password = "dummy"
-        hash = hashlib.blake2b(f"{username}{password}{secret}".encode()).hexdigest()
+        pass
 
     def sign_in(self):
-        # TODO this will need the flask login class and tools
-        username = "dummy"
-        password = "dummy"
-        hash = hashlib.blake2b(f"{username}{password}{secret}".encode()).hexdigest()
+        pass
 
     def get_image(self, image_name): # TODO delete: I don't think it makes sense to not have a name parameter
         """Gets image from GCS and generates a response in order to be able to 
@@ -72,4 +62,3 @@ class Backend:
         # else:
         #     mimetype = 'image/jpg'
         return Response(image) # , mimetype=mimetype
-
