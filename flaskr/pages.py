@@ -3,7 +3,7 @@ from flask_login import login_required, logout_user, login_user, login_manager, 
 from user import User
 
 def make_endpoints(app):
-
+    
     @app.route("/")
     def home():
         return render_template("home.html")

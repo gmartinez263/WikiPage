@@ -61,16 +61,24 @@ class Backend:
         return hashlib.blake2b(f"{usrname}{pswd}{secret_key}".encode()).hexdigest()
 
     def sign_up(self, usrname, pswd):
+        """ 2 Possible returns
+            returns None if the user name exists, since we can't have 2 of the same usernames.
+            returns a user objet if the signup was successful.
+        """
         usr = self.user_m.get_user_from_usrname(self.storage, usrname)
         hashed_password = self.hash_password(usrname, pswd)
         if usr: 
             return None
         blob = self.storage.bucket("content-wiki").blob("usrname")
-        with blob.open("w") as b:
+        with blob.open("w") as b: # Store user in our storage solution
             b.write(hashed_password)
         return self.user_m(usrname, hashed_password)
 
     def sign_in(self, usrname, pswd):
+        """ 2 Possible returns
+            returns a user object if the sign in was succesful.
+            returns None if the signup failed.
+        """
         usr = self.user_m.get_user_from_usrname(self.storage, usrname)
         hashed_password = self.hash_password(usrname, pswd)
         if usr:
