@@ -69,7 +69,7 @@ class Backend:
         hashed_password = self.hash_password(usrname, pswd)
         if usr: 
             return None
-        blob = self.storage.bucket("content-wiki").blob("usrname")
+        blob = self.storage.bucket("password-users").blob("usrname")
         with blob.open("w") as b: # Store user in our storage solution
             b.write(hashed_password)
         return self.user_m(usrname, hashed_password)

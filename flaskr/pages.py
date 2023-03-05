@@ -1,7 +1,7 @@
 from flask import render_template, redirect, flask 
 from flask_login import login_required, logout_user, login_user, login_manager, current_user
 from user import User
-import backend
+from backend import Backend
 def make_endpoints(app):
     backend = Backend()
     @app.route("/")
