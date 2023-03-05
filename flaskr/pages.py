@@ -12,7 +12,7 @@ def make_endpoints(app):
     def pages():
         return render_template("pages.html")
 
-    @app.route("/about")
+    @app.route("/about") # TODO make sure this does not break when get author images is changed to make requirements
     def about():
         return render_template("about.html", authors = ["James", "Ale", "Geovanny"])
 
@@ -57,7 +57,7 @@ You will need to provide a user_loader callback. This callback is used to reload
         return redirect(somewhere)
 
     @app.route("/images/<img_name>")
-    def get_author_images(img_name):
+    def get_author_images(img_name): # TODO this must be changed to use the functions in Backend class
         from google.cloud import storage
         from flask import Response
         

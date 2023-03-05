@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+# TODO DELETE: this is a data class
 class User(UserMixin):
     def __init__(self, id, pswd):
         self.id = id
