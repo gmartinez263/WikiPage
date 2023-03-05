@@ -5,7 +5,11 @@
 <h3>
     sign up page
 </h3>
-
+<form action="/signup" method="POST">
+    <input name="Usrname" id="Usrname" placeholder="Username">
+    <input name="Password" id="Password" type="password" placeholder="Password">
+    <button type="submit"></button>
+</form>
 <div>
     <a href = "{{url_for('login')}}">Already have an account? Login</a>
 </div>
