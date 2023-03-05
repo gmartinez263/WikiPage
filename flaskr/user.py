@@ -9,7 +9,7 @@ class User(UserMixin):
         blobs = storage_client.list_blobs("password-users")
         for blob in blobs:
             if blob.name == username:
-                with b.open() as b:
-                    password = blob.read()
+                with blob.open() as b:
+                    password = b.read()
                 return User(username, password)
         return 
