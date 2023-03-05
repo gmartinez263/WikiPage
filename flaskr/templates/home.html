@@ -5,6 +5,10 @@
 <h3>
     Home Page
 </h3>
+{% if current_user.is_authenticated %}
+  <h3>Hi {{ current_user.name }}!</h3>
+  {{url_for('logout')}}
+{% endif %}
 
 {% endblock %}
 

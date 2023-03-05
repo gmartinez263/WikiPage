@@ -1,9 +1,11 @@
-from flask import render_template, redirect, flask 
+from flask import render_template, redirect, request
 from flask_login import login_required, logout_user, login_user, login_manager, current_user
 from user import User
 from backend import Backend
 def make_endpoints(app):
+
     backend = Backend()
+
     @app.route("/")
     def home():
         return render_template("home.html")
@@ -21,31 +23,24 @@ def make_endpoints(app):
     It should take the str ID of a user, and return the corresponding user object. For example:
     """
     # Docstrings need to be properly indented
+
     @login_manager.user_loader
     def load_user(user_id): # TODO
-        return User.get(user_id)
+        return User.get(user_id) # TODO, i don't know if this must be changed yet.
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
-        # Here we use a class of some kind to represent and validate our
-        # client-side form data. For example, WTForms is a library that will
-        # handle this for us, and we use a custom LoginForm to validate.
-        form = LoginForm()
-        if form.validate_on_submit():
-            # Login and validate the user.
-            # user should be an instance of your `User` class
-            login_user(user)
-
-            flask.flash('Logged in successfully.')
-
-            next = flask.request.args.get('next')
-            # is_safe_url should check if the url is safe for redirects.
-            # See http://flask.pocoo.org/snippets/62/ for an example.
-            if not is_safe_url(next):
-                return flask.abort(400)
-
-            return flask.redirect(next or flask.url_for('index'))
-        return flask.render_template('login.html', form=form)
+        if request.method == "POST":
+            uname = request.form.get("Usrname") 
+            pswd = request.form.get("Password") 
+            usr = backend.sign_in(uname, pswd)
+            login_user(usr)
+            if usr: 
+                flask.flash('Logged in successfully.')
+                redirect("/")                
+            if not usr:
+                flask.flash('Logged failed!')
+        return flask.render_template('login.html')
 
     @app.route("/signup", methods = ["POST", "GET"])
     def signup():
@@ -53,9 +48,9 @@ def make_endpoints(app):
   
     @app.route("/logout")
     @login_required
-    def logout(): # TODO This should redirect to the main page or to the login page
+    def logout():
         logout_user()
-        return redirect(somewhere)
+        return redirect("/")
 
     @app.route("/images/<img_name>")
     def get_author_images(img_name): # TODO this must be changed to use the functions in Backend class
