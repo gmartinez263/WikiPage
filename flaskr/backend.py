@@ -29,7 +29,7 @@ use jinja to display its contents.
 # hash = hashlib.blake2b("Your password".encode()).hexdigest()
 
 class Backend:
-    def __init__(self, storage=storage_client,user_m=User):
+    def __init__(self, storage=storage_client, user_m=User):
         self.storage = storage
         self.user_m = user_m
         

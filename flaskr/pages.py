@@ -1,9 +1,9 @@
 from flask import render_template, redirect, flask 
 from flask_login import login_required, logout_user, login_user, login_manager, current_user
 from user import User
-
+import backend
 def make_endpoints(app):
-    
+    backend = Backend()
     @app.route("/")
     def home():
         return render_template("home.html")
@@ -16,10 +16,11 @@ def make_endpoints(app):
     def about():
         return render_template("about.html", authors = ["James", "Ale", "Geovanny"])
 
-"""
-You will need to provide a user_loader callback. This callback is used to reload the user object from the user ID stored in the session.
- It should take the str ID of a user, and return the corresponding user object. For example:
-"""
+    """
+    You will need to provide a user_loader callback. This callback is used to reload the user object from the user ID stored in the session.
+    It should take the str ID of a user, and return the corresponding user object. For example:
+    """
+    # Docstrings need to be properly indented
     @login_manager.user_loader
     def load_user(user_id): # TODO
         return User.get(user_id)
