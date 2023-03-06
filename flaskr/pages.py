@@ -29,7 +29,9 @@ def make_endpoints(app):
 
     @login_manager.user_loader
     def load_user(user_id): # TODO
-        return User.get(user_id) # TODO, i don't know if this must be changed yet.
+        usr = backend.get_user(user_id)
+        # return User.get(user_id) # TODO, i don't know if this must be changed yet.
+        return usr
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -37,8 +39,8 @@ def make_endpoints(app):
             uname = request.form.get("Usrname") 
             pswd = request.form.get("Password") 
             usr = backend.sign_in(uname, pswd)
-            login_user(usr)
             if usr: 
+                login_user(usr)
                 flash('Logged in successfully.')
                 redirect("/")                
             if not usr:

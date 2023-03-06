@@ -40,7 +40,9 @@ class Backend:
         with blob.open() as page_blob:
             page = "".join(page_blob.readlines())
         return page
-        
+    def get_user(self, usrname):
+        usr = self.user_m.get_user_from_usrname(self.storage, usrname)
+        return usr
     def get_all_page_names(self):
         page_names = list()
         blobs = storage_client.list_blobs(content_wiki_name, delimiter="pages")
