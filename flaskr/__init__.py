@@ -2,9 +2,8 @@ from flaskr import pages
 
 from flask import Flask
 
-from flask_login import LoginManager
-login_manager = LoginManager()
-
+# from flask_login import LoginManager
+# login_manager = LoginManager()
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -31,6 +30,7 @@ def create_app(test_config=None):
 
     # TODO(Project 1): Make additional modifications here for logging in, backends
     # and additional endpoints.
+    # login_manager.init_app(app)
     pages.make_endpoints(app)
-    login_manager.init_app(app)
+    
     return app

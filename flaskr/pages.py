@@ -1,9 +1,12 @@
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, flash
 from flask_login import login_required, logout_user, login_user, login_manager, current_user
-from user import User
 from backend import Backend
-def make_endpoints(app):
+from user import User
+from flask_login import LoginManager
+login_manager = LoginManager()
 
+def make_endpoints(app):
+    login_manager.init_app(app)
     backend = Backend()
 
     @app.route("/")
@@ -36,11 +39,11 @@ def make_endpoints(app):
             usr = backend.sign_in(uname, pswd)
             login_user(usr)
             if usr: 
-                flask.flash('Logged in successfully.')
+                flash('Logged in successfully.')
                 redirect("/")                
             if not usr:
-                flask.flash('Logged failed!')
-        return flask.render_template('login.html')
+                flash('Logged failed!')
+        return render_template('login.html')
 
     @app.route("/signup", methods = ["POST", "GET"])
     def signup():
