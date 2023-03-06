@@ -42,7 +42,7 @@ def make_endpoints(app):
             if usr: 
                 login_user(usr)
                 flash('Logged in successfully.')
-                redirect("/")                
+                return redirect("/")                
             if not usr:
                 flash('Logged failed!')
         return render_template('login.html')
