@@ -17,7 +17,8 @@ def make_endpoints(app):
     @app.route("/pages")
     def pages(): # TODO """Implement parameterized routes for pages the user uploads, displaying text associated with the page from the GCS content bucket (route: /pages/, 3 pt.s)."""
         session.pop('_flashes', None)
-        return render_template("pages.html")
+        pgs = hood.get_all_page_names()
+        return render_template("pages.html", pgs = pgs)
 
     @app.route("/about")
     def about():
