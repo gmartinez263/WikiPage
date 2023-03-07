@@ -11,15 +11,24 @@ def make_endpoints(app):
 
     @app.route("/")
     def home():
+        session.pop('_flashes', None)
         return render_template("home.html")
 
     @app.route("/pages")
     def pages(): # TODO """Implement parameterized routes for pages the user uploads, displaying text associated with the page from the GCS content bucket (route: /pages/, 3 pt.s)."""
+        session.pop('_flashes', None)
         return render_template("pages.html")
 
     @app.route("/about")
     def about():
+        session.pop('_flashes', None)
         return render_template("about.html")
+
+    @login_required
+    @app.route("/upload", methods=["GET", "POST"])
+    def upload():
+        session.pop('_flashes', None)
+        return render_template("upload.html")
 
     @login_manager.user_loader
     def load_user(user_id): # TODO

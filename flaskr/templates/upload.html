@@ -1,0 +1,17 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<h3>
+    Upload
+</h3>
+
+<form enctype="multipart/form-data" action="/upload" method="POST">
+    <input name="file" id="file" type="file">
+    <button type="submit">Upload</button>
+</form>
+<div>
+    <a href = "{{url_for('signup')}}">Don't have an account? Sign up</a>
+</div>
+
+{% endblock %}
