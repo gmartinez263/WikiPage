@@ -14,23 +14,16 @@ def make_endpoints(app):
         return render_template("home.html")
 
     @app.route("/pages")
-    def pages():
+    def pages(): # TODO """Implement parameterized routes for pages the user uploads, displaying text associated with the page from the GCS content bucket (route: /pages/, 3 pt.s)."""
         return render_template("pages.html")
 
-    @app.route("/about") # TODO make sure this does not break when get author images is changed to make requirements
+    @app.route("/about")
     def about():
-        return render_template("about.html", authors = ["James", "Ale", "Geovanny"])
-
-    """
-    You will need to provide a user_loader callback. This callback is used to reload the user object from the user ID stored in the session.
-    It should take the str ID of a user, and return the corresponding user object. For example:
-    """
-    # Docstrings need to be properly indented
+        return render_template("about.html")
 
     @login_manager.user_loader
     def load_user(user_id): # TODO
         usr = hood.get_user(user_id)
-        # return User.get(user_id) # TODO, i don't know if this must be changed yet.
         return usr
 
     @app.route('/login', methods=['GET', 'POST'])
