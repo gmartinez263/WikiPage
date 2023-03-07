@@ -8,10 +8,8 @@
 
 <form enctype="multipart/form-data" action="/upload" method="POST">
     <input name="file" id="file" type="file">
+    <input name="filename" id="filename" placeholder="File name">
     <button type="submit">Upload</button>
 </form>
-<div>
-    <a href = "{{url_for('signup')}}">Don't have an account? Sign up</a>
-</div>
 
 {% endblock %}

@@ -33,7 +33,7 @@ class Backend:
         
     def get_wiki_page(self, name): # TODO
         # TODO parse the file, this is probably going to be just text
-        blob = self.storage.bucket("content-wiki").blob(f"pages/{name}")
+        blob = self.storage.bucket(content_wiki_name).blob(f"pages/{name}")
         page = ""
         with blob.open() as page_blob:
             page = "".join(page_blob.readlines())
@@ -42,6 +42,7 @@ class Backend:
     def get_user(self, usrname):
         usr = self.user_m.get_user_from_usrname(self.storage, usrname)
         return usr
+
     def get_all_page_names(self):
         page_names = list()
         blobs = storage_client.list_blobs(content_wiki_name, delimiter="pages")
@@ -49,8 +50,11 @@ class Backend:
             page_names.append(blob.name)
         return page_names
 
-    def upload(self): # TODO
-        pass
+    def upload(self, folder, fname,file):
+        # for now we will use images and pages as folders
+        blob = self.storage.bucket(content_wiki_name).blob(f"{folder}/{fname}")
+        blob.upload_from_file(file)
+        return True
 
     """
     Notes on signup and sign in:
@@ -70,7 +74,7 @@ class Backend:
         hashed_password = self.hash_password(usrname, pswd)
         if usr: 
             return None
-        blob = self.storage.bucket("password-users").blob(usrname)
+        blob = self.storage.bucket(users_pswd_name).blob(usrname)
         with blob.open("w") as b: # Store user in our storage solution
             b.write(hashed_password)
         return self.user_m(usrname, hashed_password)
@@ -91,6 +95,6 @@ class Backend:
         """Gets image from GCS and generates a response in order to be able to 
            display the image."""
         # Image name has to be complete: "james.jpg"
-        image_blob = self.storage.bucket("content-wiki").blob(f"images/{image_name}")
+        image_blob = self.storage.bucket(content_wiki_name).blob(f"images/{image_name}")
         image = image_blob.download_as_bytes()
         return image
