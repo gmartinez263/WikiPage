@@ -15,11 +15,37 @@ def app():
 def client(app):
     return app.test_client()
 
-# TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
-# match the changes made in the other Checkpoint Requirements.
 def test_home_page(client):
     resp = client.get("/")
     assert resp.status_code == 200
     assert b"Hello, World!\n" in resp.data
 
-# TODO(Project 1): Write tests for other routes.
+def test_home():
+    response = client.get('/')
+
+    assert len(response.history) == 1
+    assert response.request.path == "/"
+
+def test_login():
+    response = client.get('/login')
+
+    assert len(response.history) == 1
+    assert response.request.path == "/login"
+
+def test_about():
+    response = client.get('/about')
+
+    assert len(response.history) == 1
+    assert response.request.path == "/about"
+
+def test_pages():
+    response = client.get('/pages')
+
+    assert len(response.history) == 1
+    assert response.request.path == "/pages"
+
+def test_signup():
+    response = client.get('/signup')
+
+    assert len(response.history) == 1
+    assert response.request.path == "/signup"

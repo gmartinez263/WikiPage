@@ -7,7 +7,7 @@ from google.cloud import storage
 # Imports library for hashing the passwords
 import hashlib
 # Importing User class and methods
-from user import User
+from flaskr import user
 
 # Instantiates a client
 storage_client = storage.Client()
@@ -29,7 +29,7 @@ use jinja to display its contents.
 # hash = hashlib.blake2b("Your password".encode()).hexdigest()
 
 class Backend:
-    def __init__(self, storage=storage_client, user_m=User):
+    def __init__(self, storage=storage_client, user_m=user):
         self.storage = storage
         self.user_m = user_m
         

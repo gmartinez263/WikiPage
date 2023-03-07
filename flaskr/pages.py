@@ -1,13 +1,12 @@
 from flask import render_template, redirect, request, flash
 from flask_login import login_required, logout_user, login_user, login_manager, current_user
-from backend import Backend
-from user import User
+from flaskr import backend, user
 from flask_login import LoginManager
 login_manager = LoginManager()
 
 def make_endpoints(app):
     login_manager.init_app(app)
-    backend = Backend()
+    hood = backend.Backend()
 
     @app.route("/")
     def home():
@@ -29,7 +28,7 @@ def make_endpoints(app):
 
     @login_manager.user_loader
     def load_user(user_id): # TODO
-        usr = backend.get_user(user_id)
+        usr = hood.get_user(user_id)
         # return User.get(user_id) # TODO, i don't know if this must be changed yet.
         return usr
 
@@ -38,7 +37,7 @@ def make_endpoints(app):
         if request.method == "POST":
             uname = request.form.get("Usrname") 
             pswd = request.form.get("Password") 
-            usr = backend.sign_in(uname, pswd)
+            usr = hood.sign_in(uname, pswd)
             if usr: 
                 login_user(usr)
                 flash('Logged in successfully.')
@@ -58,7 +57,7 @@ def make_endpoints(app):
         return redirect("/")
 
     @app.route("/images/<img_name>")
-    def get_author_images(img_name): # TODO this must be changed to use the functions in Backend class
+    def get_author_images(img_name): # TODO this must be changed to use the functions in hood class
         from google.cloud import storage
         from flask import Response
         
