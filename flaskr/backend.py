@@ -1,13 +1,11 @@
 # TODO(Project 1): Implement Backend according to the requirements.
 
-# Imports flask Response library in order to dispay images.
-from flask import Response
 # Imports the Google Cloud client library
 from google.cloud import storage
 # Imports library for hashing the passwords
 import hashlib
 # Importing User class and methods
-from flaskr import user
+from user import User
 
 # Instantiates a client
 storage_client = storage.Client()
@@ -29,7 +27,7 @@ use jinja to display its contents.
 # hash = hashlib.blake2b("Your password".encode()).hexdigest()
 
 class Backend:
-    def __init__(self, storage=storage_client, user_m=user):
+    def __init__(self, storage=storage_client, user_m=User):
         self.storage = storage
         self.user_m = user_m
         
@@ -40,6 +38,7 @@ class Backend:
         with blob.open() as page_blob:
             page = "".join(page_blob.readlines())
         return page
+
     def get_user(self, usrname):
         usr = self.user_m.get_user_from_usrname(self.storage, usrname)
         return usr
@@ -94,4 +93,4 @@ class Backend:
         # Image name has to be complete: "james.jpg"
         image_blob = self.storage.bucket("content-wiki").blob(f"images/{image_name}")
         image = image_blob.download_as_bytes()
-        return Response(image)
+        return image

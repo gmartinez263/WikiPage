@@ -1,12 +1,13 @@
-from flask import render_template, redirect, request, flash
+from flask import render_template, redirect, request, flash, Response
 from flask_login import login_required, logout_user, login_user, login_manager, current_user
-from flaskr import backend, user
+from backend import Backend
+
 from flask_login import LoginManager
 login_manager = LoginManager()
 
 def make_endpoints(app):
     login_manager.init_app(app)
-    hood = backend.Backend()
+    hood = Backend()
 
     @app.route("/")
     def home():
@@ -57,17 +58,6 @@ def make_endpoints(app):
         return redirect("/")
 
     @app.route("/images/<img_name>")
-    def get_author_images(img_name): # TODO this must be changed to use the functions in hood class
-        from google.cloud import storage
-        from flask import Response
-        
-        # Instantiates a client
-        storage_client = storage.Client()
-        # Bucket names
-        content_wiki_name = "content-wiki"
-        # bucket instanttiation
-        content_wiki_bucket = storage_client.bucket(content_wiki_name)
-        # Hopefully getting the image
-        image_blob = content_wiki_bucket.blob(f"images/{img_name}")
-        image = image_blob.download_as_bytes()
-        return Response(image)
+    def get_image(img_name): 
+        img = hood.get_image(img_name)
+        return Response(img)
