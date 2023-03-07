@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, flash, Response
+from flask import render_template, redirect, request, flash, Response, session
 from flask_login import login_required, logout_user, login_user, login_manager, current_user
 from backend import Backend
 
@@ -28,6 +28,7 @@ def make_endpoints(app):
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
+        session.pop('_flashes', None)
         if request.method == "POST":
             uname = request.form.get("Usrname") 
             pswd = request.form.get("Password") 
@@ -42,6 +43,7 @@ def make_endpoints(app):
 
     @app.route("/signup", methods = ["POST", "GET"])
     def signup():
+        session.pop('_flashes', None)
         return render_template("signup.html")
   
     @app.route("/logout")
