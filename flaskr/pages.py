@@ -44,6 +44,16 @@ def make_endpoints(app):
     @app.route("/signup", methods = ["POST", "GET"])
     def signup():
         session.pop('_flashes', None)
+        if request.method == "POST":
+            uname = request.form.get("Usrname") 
+            pswd = request.form.get("Password") 
+            usr = hood.sign_up(uname, pswd)
+            if usr: # User does not exist
+                login_user(usr)
+                flash('Signed in successfully.')
+                return redirect("/")                
+            if not usr:
+                flash('Signup failed! Please select another username.')
         return render_template("signup.html")
   
     @app.route("/logout")
