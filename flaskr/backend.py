@@ -34,9 +34,9 @@ class Backend:
     def get_wiki_page(self, name): # TODO
         # TODO parse the file, this is probably going to be just text
         blob = self.storage.bucket(content_wiki_name).blob(f"pages/{name}")
-        page = ""
+        page = list()
         with blob.open() as page_blob:
-            page = "".join(page_blob.readlines())
+            page = page_blob.readlines()
         return page
 
     def get_user(self, usrname):
@@ -45,9 +45,10 @@ class Backend:
 
     def get_all_page_names(self):
         page_names = list()
-        blobs = storage_client.list_blobs(content_wiki_name, delimiter="pages")
+        blobs = storage_client.list_blobs(content_wiki_name)
         for blob in blobs:
-            page_names.append(blob.name)
+            if(len(blob.name)!=6 and blob.name.startswith("pages/")):
+                page_names.append(blob.name)
         return page_names
 
     def upload(self, folder, fname,file):

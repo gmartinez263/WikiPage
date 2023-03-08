@@ -5,7 +5,14 @@
 <h3>
     Pages page
 </h3>
+<ul>
+{% for page in pgs %}
+{% if "." in page %}
+<li><a href="{{ page }}">{{ page[6:page.index(".")] }}</a></li>
+{% else %}
+<li><a href="{{ page }}">{{ page[6:] }}</a></li>
+{% endif %}
 
-{% for page in pages%}
 {% endfor %}
+</ul>
 {% endblock %}

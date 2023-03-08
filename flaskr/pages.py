@@ -15,10 +15,15 @@ def make_endpoints(app):
         return render_template("home.html")
 
     @app.route("/pages")
-    def pages(): # TODO """Implement parameterized routes for pages the user uploads, displaying text associated with the page from the GCS content bucket (route: /pages/, 3 pt.s)."""
+    def pages():
         session.pop('_flashes', None)
         pgs = hood.get_all_page_names()
         return render_template("pages.html", pgs = pgs)
+    
+    @app.route("/pages/<page_name>")
+    def page(page_name):
+        pg = hood.get_wiki_page(page_name)
+        return render_template("page.html",page_contents = pg )
 
     @app.route("/about")
     def about():

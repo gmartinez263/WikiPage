@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<h3>
+    Pages page
+</h3>
+{% for line in page_contents %}
+{{ line }}<br>
+{% endfor %}
+{% endblock %}
