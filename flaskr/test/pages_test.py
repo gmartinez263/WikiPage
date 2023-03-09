@@ -20,32 +20,27 @@ def test_home_page(client):
     assert resp.status_code == 200
     assert b"Hello, World!\n" in resp.data
 
-def test_home():
+def test_home(client):
     response = client.get('/')
-
     assert len(response.history) == 1
     assert response.request.path == "/"
 
-def test_login():
+def test_login(client):
     response = client.get('/login')
-
     assert len(response.history) == 1
     assert response.request.path == "/login"
 
-def test_about():
+def test_about(client):
     response = client.get('/about')
-
     assert len(response.history) == 1
     assert response.request.path == "/about"
 
-def test_pages():
+def test_pages(client):
     response = client.get('/pages')
-
     assert len(response.history) == 1
     assert response.request.path == "/pages"
 
-def test_signup():
+def test_signup(client):
     response = client.get('/signup')
-
     assert len(response.history) == 1
     assert response.request.path == "/signup"
