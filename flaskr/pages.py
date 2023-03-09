@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, flash, Response, session
+from flask import render_template, redirect, request, flash, Response, session, make_response
 from flask_login import login_required, logout_user, login_user, login_manager, current_user
 from backend import Backend
 
@@ -12,7 +12,9 @@ def make_endpoints(app):
     @app.route("/")
     def home():
         session.pop('_flashes', None)
-        return render_template("home.html")
+        response = make_response(render_template("home.html"))
+        response.status_code = 200
+        return response
 
     @app.route("/pages")
     def pages():
@@ -88,7 +90,8 @@ def make_endpoints(app):
                 return redirect("/")                
             if not usr:
                 flash('Logged failed!')
-        return render_template('login.html')
+        response = make_response(render_template('login.html'))
+        return response
 
     @app.route("/signup", methods = ["POST", "GET"])
     def signup():

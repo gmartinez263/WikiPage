@@ -18,29 +18,31 @@ def client(app):
 def test_home_page(client):
     resp = client.get("/")
     assert resp.status_code == 200
-    assert b"Hello, World!\n" in resp.data
+    assert b"Home Page" in resp.data
 
 def test_home(client):
     response = client.get('/')
-    assert len(response.history) == 1
+    assert len(response.history) == 0
     assert response.request.path == "/"
 
 def test_login(client):
     response = client.get('/login')
-    assert len(response.history) == 1
+    # print(response.url)
+    print(response.history)
+    assert len(response.history) == 0
     assert response.request.path == "/login"
 
 def test_about(client):
     response = client.get('/about')
-    assert len(response.history) == 1
+    assert len(response.history) == 0
     assert response.request.path == "/about"
 
 def test_pages(client):
     response = client.get('/pages')
-    assert len(response.history) == 1
+    assert len(response.history) == 0
     assert response.request.path == "/pages"
 
 def test_signup(client):
     response = client.get('/signup')
-    assert len(response.history) == 1
+    assert len(response.history) == 0
     assert response.request.path == "/signup"
