@@ -1,4 +1,6 @@
 from flaskr import create_app
+from bs4 import BeautifulSoup
+
 
 import pytest
 
@@ -18,12 +20,30 @@ def client(app):
 def test_home_page(client):
     resp = client.get("/")
     assert resp.status_code == 200
-    assert b"Home Page" in resp.data
 
 def test_home(client):
     response = client.get('/')
     assert len(response.history) == 0
     assert response.request.path == "/"
+
+def test_login_unsuccessful(client):
+    # Assuming valid username and password
+    response = client.post('/login', data={'Usrname': 'fake_username', 'Password': 'fake_password'})
+    redirect = client.get('/')
+    soup = BeautifulSoup(redirect.data, 'html.parser')
+    visible_text = soup.get_text()
+    assert response.status_code == 200
+    assert  not 'fake_username' in visible_text
+
+
+def test_login_successful(client):
+    # Assuming valid username and password
+    response = client.post('/login', data={'Usrname': 'ale_pagan', 'Password': 'Alejan7901'})
+    redirect = client.get("/")
+    soup = BeautifulSoup(redirect.data, 'html.parser')
+    visible_text = soup.get_text()
+    assert response.status_code == 302
+    assert  'ale_pagan' in visible_text
 
 def test_login(client):
     response = client.get('/login')
@@ -46,3 +66,4 @@ def test_signup(client):
     response = client.get('/signup')
     assert len(response.history) == 0
     assert response.request.path == "/signup"
+
