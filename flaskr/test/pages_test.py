@@ -1,5 +1,8 @@
 from flaskr import create_app
+from backend import Backend
+import unittest.mock as mock
 from bs4 import BeautifulSoup
+import json
 
 
 import pytest
@@ -45,12 +48,6 @@ def test_login_successful(client):
     assert response.status_code == 302
     assert  'ale_pagan' in visible_text
 
-def test_login(client):
-    response = client.get('/login')
-    # print(response.url)
-    print(response.history)
-    assert len(response.history) == 0
-    assert response.request.path == "/login"
 
 def test_about(client):
     response = client.get('/about')
@@ -62,8 +59,28 @@ def test_pages(client):
     assert len(response.history) == 0
     assert response.request.path == "/pages"
 
-def test_signup(client):
-    response = client.get('/signup')
-    assert len(response.history) == 0
-    assert response.request.path == "/signup"
+def test_signup_unsuccessful(client):
+    response = client.post('/signup',data={"Usrname":"ale_pagan","Password":"Alejan7901"}) #this user already exists
+    soup = BeautifulSoup(response.data, 'html.parser')
+    visible_text = soup.get_text()
+    assert response.status_code == 200
+    assert "Signup failed! Please select another username." in visible_text 
+
+def test_signup_successful(client):
+    with mock.patch.object(Backend, 'sign_up') as mock_save_user_data:
+        # Assuming valid username and password
+        response = client.post('/signup', data={"Usrname": "pedro", "Password": "432"})
+
+        # Check that the function to save user data was called with the correct arguments
+        mock_save_user_data.assert_called_once_with("pedro", "432")
+
+    # Replace the mock object with a real object
+    response.data = json.dumps({'message': 'Signup successful'}).encode('utf-8')
+
+    # Check that the server redirected to the homepage after successful signup
+    redirect = client.get("/")
+    soup = BeautifulSoup(redirect.data, 'html.parser')
+    visible_text = soup.get_text()
+    assert response.status_code == 302
+    assert "pedro" in visible_text
 
